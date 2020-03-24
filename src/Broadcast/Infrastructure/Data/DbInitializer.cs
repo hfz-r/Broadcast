@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Bogus;
 using Broadcast.Domain;
+using Broadcast.Domain.Messages;
+using Broadcast.Domain.Tags;
+using Broadcast.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Broadcast.Infrastructure.Data
@@ -67,22 +70,22 @@ namespace Broadcast.Infrastructure.Data
             #endregion
         }
 
-        private static async Task AddAsync<T>(IUnitOfWork _worker, IList<T> src) where T : BaseEntity
+        private static async Task AddAsync<T>(IUnitOfWork worker, IList<T> src) where T : BaseEntity
         {
-            var repo = _worker.GetRepositoryAsync<T>();
+            var repo = worker.GetRepositoryAsync<T>();
             await repo.AddAsync(src);
         }
 
         private static async Task Init(IServiceProvider service)
         {
-            var _worker = service.GetRequiredService<IUnitOfWork>();
+            var worker = service.GetRequiredService<IUnitOfWork>();
 
-            await AddAsync<User>(_worker, Users);
-            await AddAsync<Tag>(_worker, Tags);
-            await AddAsync<Message>(_worker, Messages);
-            await AddAsync<MessageTag>(_worker, MessageTag);
+            await AddAsync(worker, Users);
+            await AddAsync(worker, Tags);
+            await AddAsync(worker, Messages);
+            await AddAsync(worker, MessageTag);
 
-            await _worker.SaveChangesAsync();
+            await worker.SaveChangesAsync();
         }
 
         public static void SeedData(IServiceProvider service)

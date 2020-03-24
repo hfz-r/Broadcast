@@ -1,5 +1,4 @@
 using System.Reflection;
-using AutoMapper;
 using Broadcast.Infrastructure;
 using Broadcast.Infrastructure.Behaviors;
 using Broadcast.Infrastructure.Errors;
@@ -41,7 +40,7 @@ namespace Broadcast
 
             services.AddCors();
             services.AddMvcPipeline();
-            services.AddAutoMapper(GetType().Assembly);
+            services.AddAutoMapper();
 
             services.AddSpaStaticFiles(options => options.RootPath = "ClientApp/build");
 
@@ -80,7 +79,7 @@ namespace Broadcast
                 if (env.IsDevelopment())
                 {
                     //spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3003");
                 }
             });
         }

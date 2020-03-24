@@ -21,7 +21,7 @@ namespace Broadcast.Infrastructure.Data
         Task DeleteAsync(T entity);
         Task<IPaginate<TResult>> GetPagedListAsync<TResult>(Expression<Func<T, TResult>> selector, Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, int index = 0, int size = int.MaxValue, bool disableTracking = false, CancellationToken cancellationToken = default(CancellationToken)) where TResult : class;
         Task<IPaginate<T>> GetPagedListAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, int index = 0, int size = int.MaxValue, bool disableTracking = false, CancellationToken cancellationToken = default(CancellationToken));
-        Task<IQueryable<T>> GetQueryableAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IQueryable<T>> searchFunc = null, Func<IQueryable<T>, IQueryable<T>> queryExp = null, bool disableTracking = false);
+        Task<IQueryable<T>> GetQueryableAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IQueryable<T>> queryExp = null, bool disableTracking = false);
         Task<T> SingleAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, bool disableTracking = false);
         Task UpdateAsync(IEnumerable<T> entities);
         Task UpdateAsync(params T[] entities);

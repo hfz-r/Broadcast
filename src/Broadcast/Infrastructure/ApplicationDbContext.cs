@@ -1,5 +1,8 @@
 using System.Data;
 using Broadcast.Domain;
+using Broadcast.Domain.Messages;
+using Broadcast.Domain.Tags;
+using Broadcast.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -14,6 +17,8 @@ namespace Broadcast.Infrastructure
         }
 
         public DbSet<Message> Messages { get; set; }
+        public DbSet<File> Files { get; set; }
+        public DbSet<Preference> Preferences { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<MessageTag> MessageTags { get; set; }

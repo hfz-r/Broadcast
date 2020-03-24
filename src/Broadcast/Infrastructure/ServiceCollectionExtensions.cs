@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Broadcast.Infrastructure.Data;
+using Broadcast.Infrastructure.Mapper;
 using Broadcast.Infrastructure.Mvc;
 using Broadcast.Infrastructure.Security;
 using FluentValidation.AspNetCore;
@@ -32,7 +34,8 @@ namespace Broadcast.Infrastructure
                     Type = "apiKey"
                 });
 
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {{"Bearer", new string[] { }}});
+                options.AddSecurityRequirement(
+                    new Dictionary<string, IEnumerable<string>> {{"Bearer", new string[] { }}});
                 options.SwaggerDoc("v1", new Info {Title = "Hartalega Broadcast API", Version = "v1"});
                 options.CustomSchemaIds(y => y.FullName);
                 options.DocInclusionPredicate((version, apiDescription) => true);
@@ -49,6 +52,12 @@ namespace Broadcast.Infrastructure
                 })
                 .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                 .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
+        }
+
+        public static void AddAutoMapper(this IServiceCollection services)
+        {
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile<MapperProfile>(); });
+            AutoMapperConfiguration.Init(config);
         }
 
         public static void AddAuthenticationPipeline(this IServiceCollection services)

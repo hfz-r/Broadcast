@@ -87,15 +87,12 @@ namespace Broadcast.Infrastructure.Data
 
         public async Task<IQueryable<T>> GetQueryableAsync(
             Expression<Func<T, bool>> predicate = null,
-            Func<IQueryable<T>, IQueryable<T>> searchFunc = null,
             Func<IQueryable<T>, IQueryable<T>> queryExp = null,
             bool disableTracking = false)
         {
             IQueryable<T> query = _dbSet;
 
             if (disableTracking) query = query.AsNoTracking();
-
-            if (searchFunc != null) query = searchFunc(query);
 
             if (queryExp != null) query = queryExp(query);
 

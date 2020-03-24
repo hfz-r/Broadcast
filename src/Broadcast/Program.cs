@@ -22,7 +22,7 @@ namespace Broadcast
                     var dbContext = services.GetRequiredService<ApplicationDbContext>();
                     dbContext.Database.EnsureCreated();
 
-                    DbInitializer.SeedData(services);
+                    // DbInitializer.SeedData(services);
                 }
                 catch (Exception ex)
                 {

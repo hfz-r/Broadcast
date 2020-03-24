@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Broadcast.Dtos.Messages;
 using Broadcast.Infrastructure;
 using Broadcast.Infrastructure.Data;
+using Broadcast.Infrastructure.Mapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,18 +44,18 @@ namespace Broadcast.Features.Messages
 
             public async Task<MessagesEnvelope> Handle(Query message, CancellationToken cancellationToken)
             {
-                var repo = _worker.GetRepositoryAsync<Domain.Message>();
+                var repo = _worker.GetRepositoryAsync<Domain.Messages.Message>();
 
                 var messages = await repo.GetPagedListAsync(
-                    include: src => src.Include(m => m.Author).Include(m => m.MessageTags), 
+                    //include: src => src.Include(m => m.Author).Include(m => m.MessageTags),
                     orderBy: src => src.OrderByDescending(m => m.CreatedAt), index: message.Offset ?? 0,
                     size: message.Limit ?? 20,
                     cancellationToken: cancellationToken);
 
                 return new MessagesEnvelope
                 {
-                    Messages = messages.Items.Randomize().ToList(),
-                    MessagesCount = messages.Count  
+                    Messages = messages.Items.Select(msg => msg.ToDto<MessageDto>()).Randomize().ToList(),
+                    MessagesCount = messages.Count
                 };
             }
         }

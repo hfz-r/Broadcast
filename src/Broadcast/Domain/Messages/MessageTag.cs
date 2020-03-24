@@ -1,4 +1,6 @@
-﻿namespace Broadcast.Domain
+﻿using Broadcast.Domain.Tags;
+
+namespace Broadcast.Domain.Messages
 {
     public class MessageTag : BaseEntity
     {

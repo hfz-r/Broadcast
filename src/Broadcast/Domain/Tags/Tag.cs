@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Broadcast.Domain.Messages;
 
-namespace Broadcast.Domain
+namespace Broadcast.Domain.Tags
 {
     public class Tag : BaseEntity
     {

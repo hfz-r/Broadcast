@@ -4,5 +4,6 @@
     {
         public static string NotFound = "not found";
         public static string InUse = "in use";
+        public static string Existed = "existed";
     }
 }

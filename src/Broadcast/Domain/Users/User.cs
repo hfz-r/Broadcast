@@ -1,10 +1,14 @@
 using Newtonsoft.Json;
 
-namespace Broadcast.Domain
+namespace Broadcast.Domain.Users
 {
     public class User : BaseEntity
     {
         public string Username { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
 
         public string Email { get; set; }
 
