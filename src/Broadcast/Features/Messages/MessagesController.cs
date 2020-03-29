@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Broadcast.Infrastructure.Security;
+using Broadcast.Core.Infrastructure.Security;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

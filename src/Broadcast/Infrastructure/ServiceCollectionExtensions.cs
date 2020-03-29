@@ -2,26 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using Broadcast.Infrastructure.Data;
-using Broadcast.Infrastructure.Mapper;
-using Broadcast.Infrastructure.Mvc;
-using Broadcast.Infrastructure.Security;
+using Broadcast.Core.Infrastructure;
+using Broadcast.Core.Infrastructure.Mvc;
+using Broadcast.Core.Infrastructure.Security;
+using Broadcast.Services.Logging;
+using EasyCaching.Core;
+using EasyCaching.InMemory;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Broadcast.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceProvider ConfigureApplicationServices(this IServiceCollection services,
+            IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        {
+            services.AddHttpContextAccessor();
+
+            var engine = EngineContext.Create();
+            var serviceProvider = engine.ConfigureServices(services, configuration);
+
+            engine.Resolve<ILogger>().InformationAsync("Application started");
+
+            return serviceProvider;
+        }
+
         public static void AddSwaggerGen(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
@@ -43,21 +55,9 @@ namespace Broadcast.Infrastructure
             });
         }
 
-        public static void AddMvcPipeline(this IServiceCollection services)
+        public static void AddEasyCaching(this IServiceCollection services)
         {
-            services.AddMvc(options =>
-                {
-                    options.Conventions.Add(new GroupByApiRootConvention());
-                    options.Filters.Add<ValidatorActionFilter>();
-                })
-                .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-                .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Startup>());
-        }
-
-        public static void AddAutoMapper(this IServiceCollection services)
-        {
-            var config = new MapperConfiguration(cfg => { cfg.AddProfile<MapperProfile>(); });
-            AutoMapperConfiguration.Init(config);
+            services.AddEasyCaching(option => { option.UseInMemory(); });
         }
 
         public static void AddAuthenticationPipeline(this IServiceCollection services)
@@ -88,6 +88,7 @@ namespace Broadcast.Infrastructure
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -108,28 +109,23 @@ namespace Broadcast.Infrastructure
                 });
         }
 
-        public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services)
-            where TContext : DbContext
+        public static IMvcBuilder AddMvcPipeline(this IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
-            services.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
-            return services;
-        }
+            var mvcBuilder = services.AddMvc();
 
-        public static void AddSerilog(this ILoggerFactory loggerFactory)
-        {
-            //attach the sink to the logger configuration
-            var log = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .Enrich.FromLogContext()
-                //just for local debug
-                .WriteTo.Console(
-                    outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] {SourceContext} {Message}{NewLine}{Exception}",
-                    theme: AnsiConsoleTheme.Code)
-                .CreateLogger();
+            mvcBuilder.AddMvcOptions(options => options.Conventions.Add(new GroupByApiRootConvention()));
+            mvcBuilder.AddMvcOptions(options => options.Filters.Add<ValidatorActionFilter>());
 
-            loggerFactory.AddSerilog(log);
-            Log.Logger = log;
+            mvcBuilder.AddJsonOptions(options =>
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            mvcBuilder.AddFluentValidation(config =>
+            {
+                config.RegisterValidatorsFromAssemblyContaining<Broadcast.Startup>();
+                config.ImplicitlyValidateChildProperties = true;
+            });
+
+            return mvcBuilder;
         }
     }
 }

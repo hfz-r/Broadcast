@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Broadcast.Domain;
 using Broadcast.Dtos.Messages;
+using Newtonsoft.Json;
 
 namespace Broadcast.Features.Messages
 {
@@ -11,13 +11,16 @@ namespace Broadcast.Features.Messages
             Message = message;
         }
 
+        [JsonProperty("message")]
         public MessageDto Message { get; }
     }
 
     public class MessagesEnvelope
     {
+        [JsonProperty("messages")]
         public List<MessageDto> Messages { get; set; }
 
+        [JsonProperty("messageCount")]
         public int MessagesCount { get; set; }
     }
 }

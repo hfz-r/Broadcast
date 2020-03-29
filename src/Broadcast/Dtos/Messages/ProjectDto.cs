@@ -7,11 +7,8 @@ namespace Broadcast.Dtos.Messages
         [JsonProperty("project")]
         public string Project { get; set; }
 
-        public LocationDto LocationDto { get; set; }
-    }
+        #region Location
 
-    public class LocationDto
-    {
         [JsonProperty("NGC")]
         public bool Ngc { get; set; }
 
@@ -20,5 +17,7 @@ namespace Broadcast.Dtos.Messages
 
         [JsonProperty("PJ")]
         public bool Pj { get; set; }
+
+        #endregion
     }
 }

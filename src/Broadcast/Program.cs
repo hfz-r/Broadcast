@@ -1,10 +1,10 @@
 using System;
-using Broadcast.Infrastructure;
-using Broadcast.Infrastructure.Data;
+using Broadcast.Data;
+using Broadcast.Data.Seed;
+using Broadcast.Services.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Broadcast
 {
@@ -22,12 +22,12 @@ namespace Broadcast
                     var dbContext = services.GetRequiredService<ApplicationDbContext>();
                     dbContext.Database.EnsureCreated();
 
-                    // DbInitializer.SeedData(services);
+                    DbInitializer.SeedData(services);
                 }
                 catch (Exception ex)
                 {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
+                    var logger = services.GetRequiredService<ILogger>();
+                    logger.ErrorAsync(ex.Message, ex);
                 }
             }
 
