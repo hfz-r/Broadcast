@@ -11,7 +11,19 @@ namespace Broadcast.Infrastructure.Startup
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             //cors
-            services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("http://localhost:3003")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    });
+            });
+
             //mvc
             services.AddMvcPipeline();
         }
@@ -19,12 +31,11 @@ namespace Broadcast.Infrastructure.Startup
         public void Configure(IApplicationBuilder application)
         {
             //cors
-            application.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
+            application.UseCors("AllowAllOrigins");
+
             //mvc
             application.UseMvc();
+
             //spa client
             application.UseSpa(spa =>
             {

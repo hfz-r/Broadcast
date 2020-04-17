@@ -15,7 +15,7 @@ namespace Broadcast.Core.Infrastructure.Security
             _jwtOptions = jwtOptions.Value;
         }
 
-        public async Task<string> CreateToken(string username)
+        public async Task<TokenEnvelope> CreateToken(string username)
         {
             var claims = new[]
             {
@@ -35,7 +35,7 @@ namespace Broadcast.Core.Infrastructure.Security
                 _jwtOptions.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-            return encodedJwt;
+            return new TokenEnvelope(encodedJwt, _jwtOptions.Expiration);
         }
     }
 }

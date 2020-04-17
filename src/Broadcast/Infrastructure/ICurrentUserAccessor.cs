@@ -1,6 +1,6 @@
 ﻿using Broadcast.Core.Domain.Users;
 
-namespace Broadcast.Core.Infrastructure
+namespace Broadcast.Infrastructure
 {
     public interface ICurrentUserAccessor
     {

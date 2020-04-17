@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices.AccountManagement;
 using Broadcast.Core.Domain;
 
 namespace Broadcast.Core.Infrastructure.Mapper
@@ -51,6 +52,15 @@ namespace Broadcast.Core.Infrastructure.Mapper
                 throw new ArgumentNullException(nameof(entity));
 
             return dto.MapTo(entity);
+        }
+
+        //UserPrincipal specific use
+        public static TEntity ToEntity<TEntity>(this UserPrincipal userPrincipal) where TEntity : BaseEntity
+        {
+            if (userPrincipal == null)
+                throw new ArgumentNullException(nameof(userPrincipal));
+
+            return userPrincipal.Map<TEntity>();
         }
     }
 }

@@ -21,12 +21,8 @@ namespace Broadcast.Data.Seed
 
             var userFaker = new Faker<User>()
                 //.RuleFor(u => u.Id, f => f.IndexFaker)
-                .RuleFor(u => u.Username, f => f.Name.FirstName())
-                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.Username))
-                .RuleFor(u => u.Bio, f => f.Rant.Review())
-                .RuleFor(u => u.Image, f => f.Image.PicsumUrl())
-                .RuleFor(u => u.Hash, f => f.Random.Bytes(1))
-                .RuleFor(u => u.Salt, f => f.Random.Bytes(1));
+                .RuleFor(u => u.AccountName, f => f.Name.FirstName())
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.AccountName));
 
             Users = userFaker.Generate(3);
 

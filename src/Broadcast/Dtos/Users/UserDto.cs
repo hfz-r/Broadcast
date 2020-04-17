@@ -1,25 +1,35 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace Broadcast.Dtos.Users
 {
     public class UserDto
     {
+        [JsonProperty("guid")]
+        public Guid Guid { get; set; }
+
         [JsonProperty("username")]
         public string Username { get; set; }
 
-        [JsonProperty("first_name")]
-        public string FirstName { get; set; }
+        [JsonProperty("full_name")]
+        public string FullName { get; set; }
 
-        [JsonProperty("last_name")]
-        public string LastName { get; set; }
+        [JsonProperty("given_name")]
+        public string GivenName { get; set; }
 
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("bio")]
-        public string Bio { get; set; }
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
 
         [JsonProperty("image")]
         public string Image { get; set; }
+
+        [JsonProperty("department")]
+        public string Department { get; set; }
+
+        [JsonProperty("designation")]
+        public string Designation { get; set; }
     }
 }

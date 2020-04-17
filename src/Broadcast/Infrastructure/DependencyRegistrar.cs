@@ -4,10 +4,13 @@ using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Security;
 using Broadcast.Core.Infrastructure.TypeFinder;
 using Broadcast.Data;
+using Broadcast.Infrastructure.Auth.Policies;
 using Broadcast.Infrastructure.Behaviors;
+using Broadcast.Services.Auth;
 using Broadcast.Services.Common;
 using Broadcast.Services.Logging;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Broadcast.Infrastructure
 {
@@ -20,6 +23,10 @@ namespace Broadcast.Infrastructure
                 .InstancePerDependency();
             builder.RegisterGeneric(typeof(DbContextTransactionBehavior<,>)).As(typeof(IPipelineBehavior<,>))
                 .InstancePerLifetimeScope();
+
+            //authorization
+            builder.RegisterType<AuthorizationSchemeHandler>().As<IAuthorizationHandler>().SingleInstance();
+            builder.RegisterType<SignedInHandler>().As<IAuthorizationHandler>().SingleInstance();
 
             //unit-of-work
             builder.RegisterGeneric(typeof(UnitOfWork<>)).As(typeof(IUnitOfWork<>)).InstancePerLifetimeScope();
@@ -37,6 +44,7 @@ namespace Broadcast.Infrastructure
             //domain services
             builder.RegisterType<DefaultLogger>().As<ILogger>().InstancePerLifetimeScope();
             builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerLifetimeScope();
+            builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
         }
 
         public int Order => 0;

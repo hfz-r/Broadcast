@@ -7,7 +7,7 @@ using Broadcast.Services.Logging;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace Broadcast.Services.Middleware
+namespace Broadcast.Infrastructure.Middleware
 {
     public class ErrorHandlingMiddleware
     {

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Broadcast.Core.Configuration;
 using Broadcast.Core.Infrastructure;
 using EasyCaching.Core;
 using MediatR;
@@ -12,6 +13,8 @@ namespace Broadcast.Infrastructure.Startup
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            //config
+            services.Configure<LdapSettingOptions>(configuration.GetSection("LdapSettings"));
             //mediatr
             services.AddMediatR(Assembly.GetExecutingAssembly());
             //easy-cache

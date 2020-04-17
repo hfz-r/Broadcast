@@ -1,6 +1,8 @@
 ﻿using System;
 using Broadcast.Core.Caching;
 using Broadcast.Core.Infrastructure;
+using Broadcast.Infrastructure;
+using Broadcast.Services.Auth;
 using Broadcast.Services.Common;
 using Microsoft.AspNetCore.Http;
 using Moq;

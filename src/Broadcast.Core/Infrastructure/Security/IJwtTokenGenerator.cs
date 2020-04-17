@@ -4,6 +4,6 @@ namespace Broadcast.Core.Infrastructure.Security
 {
     public interface IJwtTokenGenerator
     {
-        Task<string> CreateToken(string username);
+        Task<TokenEnvelope> CreateToken(string username);
     }
 }

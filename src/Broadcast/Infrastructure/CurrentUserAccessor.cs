@@ -1,9 +1,10 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using Broadcast.Core.Domain.Users;
+using Broadcast.Core.Infrastructure;
 using Microsoft.AspNetCore.Http;
 
-namespace Broadcast.Core.Infrastructure
+namespace Broadcast.Infrastructure
 {
     public class CurrentUserAccessor : ICurrentUserAccessor
     {
@@ -18,11 +19,8 @@ namespace Broadcast.Core.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetCurrentUsername()
-        {
-            return _httpContextAccessor.HttpContext.User?.Claims
-                ?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-        }
+        public string GetCurrentUsername() => 
+            _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
         #region Properties
 
@@ -35,8 +33,7 @@ namespace Broadcast.Core.Infrastructure
 
                 var repo = _worker.GetRepositoryAsync<User>();
 
-                var user = AsyncHelper.RunSync(() => repo.SingleAsync(u => u.Username == GetCurrentUsername()));
-
+                var user = AsyncHelper.RunSync(() => repo.SingleAsync(u => u.AccountName == GetCurrentUsername()));
                 if (user == null) return null;
 
                 return _cachedUser = user;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using AutoMapper;
 using Broadcast.Core.Domain.Messages;
@@ -6,6 +7,7 @@ using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Infrastructure.Mapper;
 using Broadcast.Dtos.Messages;
 using Broadcast.Dtos.Users;
+using Broadcast.Services.Auth;
 
 namespace Broadcast.Infrastructure.Mapper
 {
@@ -24,6 +26,7 @@ namespace Broadcast.Infrastructure.Mapper
             CreateMessageMap();
             //user
             CreateUserMap();
+            CreateUserPrincipalMap();
         }
 
         private void CreateMessageProjectMap()
@@ -63,6 +66,7 @@ namespace Broadcast.Infrastructure.Mapper
         {
             CreateMap<File, FilesDto>()
                 .IgnoreAllNonExisting()
+                .ForMember(x => x.FileId, y => y.MapFrom(src => src.Id))
                 .ForMember(x => x.FileName, y => y.MapFrom(src => src.FileName))
                 .ForMember(x => x.FileType, y => y.MapFrom(src => src.FileType))
                 .ForMember(x => x.FileSize, y => y.MapFrom(src => src.FileSize))
@@ -89,28 +93,40 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.AboutDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.DetailsDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.ExtrasDto, y => y.MapFrom(src => src))
-                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src.Author.ToDto<UserDto>()))
-                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src.Preference.ToDto<PreferencesDto>()));
+                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src))
+                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src));
         }
 
         private void CreateUserMap()
         {
             CreateMap<User, UserDto>()
                 .IgnoreAllNonExisting()
-                .ForMember(x => x.Username, y => y.MapFrom(src => src.Username))
-                .ForMember(x => x.FirstName, y => y.MapFrom(src => src.FirstName))
-                .ForMember(x => x.LastName, y => y.MapFrom(src => src.LastName))
+                .ForMember(x => x.Guid, y => y.MapFrom(src => src.Guid))
+                .ForMember(x => x.Username, y => y.MapFrom(src => src.AccountName))
+                .ForMember(x => x.FullName, y => y.MapFrom(src => src.Name))
+                .ForMember(x => x.GivenName, y => y.MapFrom(src => src.GivenName))
                 .ForMember(x => x.Email, y => y.MapFrom(src => src.Email))
-                .ForMember(x => x.Bio, y => y.MapFrom(src => src.Bio))
-                .ForMember(x => x.Image, y => y.MapFrom(src => src.Image));
-            CreateMap<UserDto, User>()
+                .ForMember(x => x.Phone, y => y.MapFrom(src => src.PhoneNumber))
+                .ForMember(x => x.Image, y => y.MapFrom(src => Convert.ToBase64String(src.Photo)))
+                .ForMember(x => x.Department, y => y.MapFrom(src => src.Department))
+                .ForMember(x => x.Designation, y => y.MapFrom(src => src.Title));
+        }
+
+        private void CreateUserPrincipalMap()
+        {
+            CreateMap<UserPrincipal, User>()
                 .IgnoreAllNonExisting()
-                .ForMember(x => x.Username, y => y.MapFrom(src => src.Username))
-                .ForMember(x => x.FirstName, y => y.MapFrom(src => src.FirstName))
-                .ForMember(x => x.LastName, y => y.MapFrom(src => src.LastName))
-                .ForMember(x => x.Email, y => y.MapFrom(src => src.Email))
-                .ForMember(x => x.Bio, y => y.MapFrom(src => src.Bio))
-                .ForMember(x => x.Image, y => y.MapFrom(src => src.Image));
+                .ForMember(x => x.Guid, y => y.MapFrom(src => src.Guid))
+                .ForMember(x => x.AccountName, y => y.MapFrom(src => src.SamAccountName))
+                .ForMember(x => x.PrincipalName, y => y.MapFrom(src => src.UserPrincipalName))
+                .ForMember(x => x.Name, y => y.MapFrom(src => src.Name))
+                .ForMember(x => x.GivenName, y => y.MapFrom(src => src.GivenName))
+                .ForMember(x => x.Email, y => y.MapFrom(src => src.EmailAddress))
+                .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.VoiceTelephoneNumber))
+                .ForMember(x => x.Photo, y => y.MapFrom(src => Convert.FromBase64String(src.GetProperty("thumbnailPhoto"))))
+                .ForMember(x => x.Company, y => y.MapFrom(src => src.GetProperty("company")))
+                .ForMember(x => x.Department, y => y.MapFrom(src => src.GetProperty("department")))
+                .ForMember(x => x.Title, y => y.MapFrom(src => src.GetProperty("title")));
         }
 
         public int Order => 0;

@@ -1,5 +1,5 @@
 ﻿using Broadcast.Core.Infrastructure;
-using Broadcast.Services.Middleware;
+using Broadcast.Infrastructure.Middleware;
 using Microsoft.AspNetCore.Builder;
 
 namespace Broadcast.Infrastructure

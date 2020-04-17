@@ -10,6 +10,9 @@ namespace Broadcast.Dtos.Messages
 
     public class FilesDto
     {
+        [JsonProperty("file_id")]
+        public int FileId { get; set; }
+
         [JsonProperty("name")]
         public string FileName { get; set; }
 
