@@ -77,6 +77,19 @@ namespace Broadcast.Data.Seed
             };
 
             #endregion
+
+            #region Role
+
+            Roles = new List<Role>
+            {
+                new Role{Name = "Admin"},
+                new Role{Name = "Tester"},
+                new Role{Name = "DBA"},
+                new Role{Name = "QA"},
+                new Role{Name = "Analyst"},
+            };
+
+            #endregion
         }
 
         private static async Task AddAsync<T>(IUnitOfWork worker, IList<T> src) where T : BaseEntity
@@ -94,6 +107,7 @@ namespace Broadcast.Data.Seed
             //await AddAsync(worker, Messages);
             //await AddAsync(worker, MessageTag);
             await AddAsync(worker, Categories);
+            await AddAsync(worker, Roles);
 
             await worker.SaveChangesAsync();
         }
@@ -112,5 +126,6 @@ namespace Broadcast.Data.Seed
         public static IList<Message> Messages { get; private set; }
         public static IList<MessageTag> MessageTag { get; private set; }
         public static IList<Category> Categories { get; private set; }
+        public static IList<Role> Roles { get; private set; }
     }
 }

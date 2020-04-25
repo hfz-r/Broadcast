@@ -26,5 +26,18 @@ namespace Broadcast.Features.Users
         {
             return await Task.FromResult(new UserEnvelope(_currentUser.CurrentUser.ToDto<UserDto>()));
         }
+
+        [HttpGet]
+        public async Task<UsersEnvelope> Get([FromQuery] string department, [FromQuery] int? limit, [FromQuery] int? offset)
+        {
+            return await _mediator.Send(new List.Query(department, limit, offset));
+        }
+
+        [HttpPut("{username}")]
+        public async Task<UserEnvelope> Edit(string username, [FromBody] Edit.Command command)
+        {
+            command.Username = username;
+            return await _mediator.Send(command);
+        }
     }
 }

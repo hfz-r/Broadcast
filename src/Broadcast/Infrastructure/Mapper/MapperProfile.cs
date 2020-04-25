@@ -1,5 +1,6 @@
 ﻿using System;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Broadcast.Core.Domain.Messages;
@@ -93,8 +94,8 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.AboutDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.DetailsDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.ExtrasDto, y => y.MapFrom(src => src))
-                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src))
-                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src));
+                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src.Author.ToDto<User>()))
+                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src.Preference.ToDto<Preference>()));
         }
 
         private void CreateUserMap()
@@ -109,7 +110,8 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.Phone, y => y.MapFrom(src => src.PhoneNumber))
                 .ForMember(x => x.Image, y => y.MapFrom(src => Convert.ToBase64String(src.Photo)))
                 .ForMember(x => x.Department, y => y.MapFrom(src => src.Department))
-                .ForMember(x => x.Designation, y => y.MapFrom(src => src.Title));
+                .ForMember(x => x.Designation, y => y.MapFrom(src => src.Title))
+                .ForMember(x => x.Roles, y => y.MapFrom(src => src.UserRoles.Select(r => r.Role.Name)));
         }
 
         private void CreateUserPrincipalMap()
@@ -126,9 +128,20 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.Photo, y => y.MapFrom(src => Convert.FromBase64String(src.GetProperty("thumbnailPhoto"))))
                 .ForMember(x => x.Company, y => y.MapFrom(src => src.GetProperty("company")))
                 .ForMember(x => x.Department, y => y.MapFrom(src => src.GetProperty("department")))
-                .ForMember(x => x.Title, y => y.MapFrom(src => src.GetProperty("title")));
+                .ForMember(x => x.Title, y => y.MapFrom(src => src.GetProperty("title").ToTitleCase()));
         }
 
         public int Order => 0;
+    }
+
+    internal static class StringExtensions
+    {
+        public static string ToTitleCase(this string str)
+        {
+            if (string.IsNullOrEmpty(str)) throw new ArgumentNullException(nameof(str));
+
+            var textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(str.ToLower());
+        }
     }
 }

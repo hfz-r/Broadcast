@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Tags;
-using Broadcast.Core.Domain.Users;
 using Broadcast.Dtos.Messages;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
@@ -45,7 +44,6 @@ namespace Broadcast.Features.Messages
 
             public async Task<MessageEnvelope> Handle(Command request, CancellationToken cancellationToken)
             {
-                var userRepo = _worker.GetRepositoryAsync<User>();
                 var messageRepo = _worker.GetRepositoryAsync<Message>();
                 var tagRepo = _worker.GetRepositoryAsync<Tag>();
                 var messageTagRepo = _worker.GetRepositoryAsync<MessageTag>();
@@ -69,14 +67,10 @@ namespace Broadcast.Features.Messages
                     EndDate = request.Message.AboutDto.EndDate,
                     Body = request.Message.DetailsDto?.Editor,
                     Slug = request.Message.AboutDto.Title.GenerateSlug(),
+                    Author = _currentUser.CurrentUser,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow,
                 };
-
-                //handle author
-                var author = request.Message.AuthorDto;
-                var user = await userRepo.SingleAsync(u => u.AccountName == author.Username); //should compare with httpcontext
-                message.Author = user ?? author.ToEntity(new User());
 
                 //materialized message
                 await messageRepo.AddAsync(message, cancellationToken);

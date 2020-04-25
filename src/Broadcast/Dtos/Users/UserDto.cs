@@ -31,5 +31,8 @@ namespace Broadcast.Dtos.Users
 
         [JsonProperty("designation")]
         public string Designation { get; set; }
+
+        [JsonProperty("roles")]
+        public string[] Roles { get; set; }
     }
 }
