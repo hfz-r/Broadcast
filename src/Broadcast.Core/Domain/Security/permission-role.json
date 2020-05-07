@@ -1,0 +1,10 @@
+[
+  {
+    "role": "Admin",
+    "permissions": ["AccessAll"]
+  },
+  {
+    "role": "Tester",
+    "permissions": ["UserRead", "WidgetRead"]
+  }
+]

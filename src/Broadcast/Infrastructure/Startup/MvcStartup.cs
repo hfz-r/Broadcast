@@ -17,7 +17,7 @@ namespace Broadcast.Infrastructure.Startup
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:3003")
+                            .WithOrigins("http://localhost:3000", "http://localhost:3003")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();

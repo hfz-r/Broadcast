@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Broadcast.Core;
 using Broadcast.Core.Caching;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Security;
@@ -9,6 +10,8 @@ using Broadcast.Infrastructure.Behaviors;
 using Broadcast.Services.Auth;
 using Broadcast.Services.Common;
 using Broadcast.Services.Logging;
+using Broadcast.Services.Security;
+using Broadcast.Services.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 
@@ -40,11 +43,14 @@ namespace Broadcast.Infrastructure
             //general helpers
             builder.RegisterType<JwtTokenGenerator>().As<IJwtTokenGenerator>().InstancePerLifetimeScope();
             builder.RegisterType<CurrentUserAccessor>().As<ICurrentUserAccessor>().InstancePerLifetimeScope();
-
-            //domain services
+            
+            //log service
             builder.RegisterType<DefaultLogger>().As<ILogger>().InstancePerLifetimeScope();
-            builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerLifetimeScope();
+            //domain services
             builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
+            builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerLifetimeScope();
         }
 
         public int Order => 0;

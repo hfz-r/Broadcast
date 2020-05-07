@@ -7,9 +7,11 @@ using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Tags;
 using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Infrastructure;
+using Broadcast.Core.Infrastructure.Security;
+using Broadcast.Services.Security;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Broadcast.Data.Seed
+namespace Broadcast.Infrastructure.Seed
 {
     public static class DbInitializer
     {
@@ -98,7 +100,19 @@ namespace Broadcast.Data.Seed
             if ((await repo.GetPagedListAsync()).Count == 0) await repo.AddAsync(src);
         }
 
-        private static async Task Init(IServiceProvider service)
+        private static async Task InitPermissionRole(IServiceProvider service)
+        {
+            var permissionService = service.GetRequiredService<IPermissionService>();
+
+            var permissionProviders = new List<Type> { typeof(StandardPermissionProvider) };
+            foreach (var providerType in permissionProviders)
+            {
+                var provider = (IPermissionProvider)Activator.CreateInstance(providerType);
+                await permissionService.InstallPermissionsAsync(provider);
+            }
+        }
+
+        private static async Task InitCommonData(IServiceProvider service)
         {
             var worker = service.GetRequiredService<IUnitOfWork>();
 
@@ -106,8 +120,8 @@ namespace Broadcast.Data.Seed
             //await AddAsync(worker, Tags);
             //await AddAsync(worker, Messages);
             //await AddAsync(worker, MessageTag);
+            //await AddAsync(worker, Roles);
             await AddAsync(worker, Categories);
-            await AddAsync(worker, Roles);
 
             await worker.SaveChangesAsync();
         }
@@ -117,7 +131,8 @@ namespace Broadcast.Data.Seed
             Task.Run(async () =>
             {
                 Faker();
-                await Init(service);
+                await InitCommonData(service);
+                await InitPermissionRole(service);
             }).Wait();
         }
 

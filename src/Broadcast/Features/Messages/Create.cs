@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Broadcast.Core;
 using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Tags;
 using Broadcast.Dtos.Messages;

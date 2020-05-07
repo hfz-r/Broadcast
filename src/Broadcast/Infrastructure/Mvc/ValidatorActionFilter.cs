@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Broadcast.Core.Infrastructure.Mvc
+namespace Broadcast.Infrastructure.Mvc
 {
     public class ValidatorActionFilter : IActionFilter
     {

@@ -32,6 +32,7 @@ namespace Broadcast.Dtos.Users
         [JsonProperty("designation")]
         public string Designation { get; set; }
 
+        //todo - check this why can`t retrive on group-join, lazyload-ish exception!
         [JsonProperty("roles")]
         public string[] Roles { get; set; }
     }

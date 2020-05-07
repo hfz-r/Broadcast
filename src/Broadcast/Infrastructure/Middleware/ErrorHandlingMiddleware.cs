@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Broadcast.Core;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
 using Broadcast.Services.Logging;

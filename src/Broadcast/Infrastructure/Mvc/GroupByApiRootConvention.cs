@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Broadcast.Core.Infrastructure.Mvc
+namespace Broadcast.Infrastructure.Mvc
 {
     public class GroupByApiRootConvention : IControllerModelConvention
     {

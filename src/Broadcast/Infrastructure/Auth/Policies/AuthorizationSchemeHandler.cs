@@ -6,8 +6,7 @@ namespace Broadcast.Infrastructure.Auth.Policies
 {
     public class AuthorizationSchemeHandler : AuthorizationHandler<AuthorizationSchemeRequirement>
     {
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
-            AuthorizationSchemeRequirement requirement)
+        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, AuthorizationSchemeRequirement requirement)
         {
             var mvcContext = context.Resource as AuthorizationFilterContext;
 

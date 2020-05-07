@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
+using Broadcast.Core;
 using Broadcast.Core.Infrastructure.Mapper;
+using Broadcast.Core.Infrastructure.Security;
 using Broadcast.Dtos.Users;
-using Broadcast.Infrastructure;
+using Broadcast.Infrastructure.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,18 +24,21 @@ namespace Broadcast.Features.Users
         }
 
         [HttpGet("current")]
+        //[HasPermission(StandardPermission.UserRead)]
         public async Task<UserEnvelope> GetCurrentUser()
         {
             return await Task.FromResult(new UserEnvelope(_currentUser.CurrentUser.ToDto<UserDto>()));
         }
 
         [HttpGet]
+        //[HasPermission(StandardPermission.UserRead)]
         public async Task<UsersEnvelope> Get([FromQuery] string department, [FromQuery] int? limit, [FromQuery] int? offset)
         {
             return await _mediator.Send(new List.Query(department, limit, offset));
         }
 
         [HttpPut("{username}")]
+        //[HasPermission(StandardPermission.UserChange)]
         public async Task<UserEnvelope> Edit(string username, [FromBody] Edit.Command command)
         {
             command.Username = username;

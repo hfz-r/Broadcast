@@ -11,9 +11,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Broadcast.Core\Broadcast.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mapping\Users\" />
-  </ItemGroup>
   
 </Project>

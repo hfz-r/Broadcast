@@ -52,10 +52,19 @@ namespace Broadcast.Features.Users
                 if (users == null)
                     throw new RestException(HttpStatusCode.NotFound, new {Users = $"Users {Constants.NotFound}"});
 
+                var userRoleRepo = _worker.GetRepositoryAsync<UserRole>();
+                var userRole = await userRoleRepo.GetQueryableAsync(ur => users.Any(u => u.Id == ur.UserId));
+
                 var paginateUser = await users.ToPaginateAsync(request.Offset ?? 0, request.Limit ?? 20, 0, cancellationToken);
                 return new UsersEnvelope
                 {
-                    Users = paginateUser.Items.Select(user => user.ToDto<UserDto>()).ToList(),
+                    Users = paginateUser.Items.Select(user =>
+                    {
+                        //todo - should be one-shot when ToDto. Check-->UserDto
+                        var userDto = user.ToDto<UserDto>();
+                        userDto.Roles = userRole.Select(ur => ur.Role.Name).ToArray(); 
+                        return userDto;
+                    }).ToList(),
                     UsersCount = paginateUser.Count
                 };
             }

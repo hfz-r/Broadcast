@@ -1,6 +1,6 @@
 using System;
 using Broadcast.Data;
-using Broadcast.Data.Seed;
+using Broadcast.Infrastructure.Seed;
 using Broadcast.Services.Logging;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;

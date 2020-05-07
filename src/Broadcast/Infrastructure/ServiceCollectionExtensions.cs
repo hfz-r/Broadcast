@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Broadcast.Core.Infrastructure;
-using Broadcast.Core.Infrastructure.Mvc;
+using Broadcast.Infrastructure.Mvc;
 using Broadcast.Services.Logging;
 using EasyCaching.Core;
 using EasyCaching.InMemory;

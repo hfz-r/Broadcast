@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Broadcast.Core.Domain.Messages;
+using Broadcast.Core.Domain.Security;
 using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Infrastructure.Mapper;
 using Broadcast.Dtos.Messages;
+using Broadcast.Dtos.Security;
 using Broadcast.Dtos.Users;
 using Broadcast.Services.Auth;
 
@@ -25,6 +28,12 @@ namespace Broadcast.Infrastructure.Mapper
             CreateExtrasMap();
             CreatePreferencesMap();
             CreateMessageMap();
+            //security
+            //CreatePermissionSecurityMap();
+            //CreateUserSecurityMap();
+            //CreateRoleSecurityMap();
+            CreateRoleMap();
+            CreatePermissionMap();
             //user
             CreateUserMap();
             CreateUserPrincipalMap();
@@ -94,8 +103,44 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.AboutDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.DetailsDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.ExtrasDto, y => y.MapFrom(src => src))
-                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src.Author.ToDto<User>()))
-                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src.Preference.ToDto<Preference>()));
+                .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src.Author.ToDto<UserDto>()))
+                .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src.Preference.ToDto<PreferencesDto>()));
+        }
+
+        //private void CreatePermissionSecurityMap()
+        //{
+        //    CreateMap<IList<Permission>, SecurityDto>()
+        //        .IgnoreAllNonExisting()
+        //        .ForMember(x => x.Permissions, y => y.MapFrom(src => src.Select(p => p.ToDto<PermissionDto>())));
+        //}
+
+        //private void CreateUserSecurityMap()
+        //{
+        //    CreateMap<IList<User>, SecurityDto>()
+        //        .IgnoreAllNonExisting()
+        //        .ForMember(x => x.Users, y => y.MapFrom(src => src.Select(u => u.ToDto<UserDto>())));
+        //}
+
+        //private void CreateRoleSecurityMap()
+        //{
+        //    CreateMap<Role, SecurityDto>()
+        //        .IgnoreAllNonExisting()
+        //        .ForMember(x => x.Role, y => y.MapFrom(src => src.ToDto<RoleDto>()));
+        //}
+
+        private void CreateRoleMap()
+        {
+            CreateMap<Role, RoleDto>()
+                .IgnoreAllNonExisting()
+                .ForMember(x => x.Name, y => y.MapFrom(src => src.Name));
+        }
+
+        private void CreatePermissionMap()
+        {
+            CreateMap<Permission, PermissionDto>()
+                .IgnoreAllNonExisting()
+                .ForMember(x => x.Name, y => y.MapFrom(src => src.Name))
+                .ForMember(x => x.Category, y => y.MapFrom(src => src.Category));
         }
 
         private void CreateUserMap()
@@ -110,8 +155,8 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.Phone, y => y.MapFrom(src => src.PhoneNumber))
                 .ForMember(x => x.Image, y => y.MapFrom(src => Convert.ToBase64String(src.Photo)))
                 .ForMember(x => x.Department, y => y.MapFrom(src => src.Department))
-                .ForMember(x => x.Designation, y => y.MapFrom(src => src.Title))
-                .ForMember(x => x.Roles, y => y.MapFrom(src => src.UserRoles.Select(r => r.Role.Name)));
+                .ForMember(x => x.Designation, y => y.MapFrom(src => src.Title));
+            //.ForMember(x => x.Roles, y => y.MapFrom(src => src.UserRoles.Select(r => r.Role.Name))); 
         }
 
         private void CreateUserPrincipalMap()
@@ -125,10 +170,10 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.GivenName, y => y.MapFrom(src => src.GivenName))
                 .ForMember(x => x.Email, y => y.MapFrom(src => src.EmailAddress))
                 .ForMember(x => x.PhoneNumber, y => y.MapFrom(src => src.VoiceTelephoneNumber))
-                .ForMember(x => x.Photo, y => y.MapFrom(src => Convert.FromBase64String(src.GetProperty("thumbnailPhoto"))))
-                .ForMember(x => x.Company, y => y.MapFrom(src => src.GetProperty("company")))
-                .ForMember(x => x.Department, y => y.MapFrom(src => src.GetProperty("department")))
-                .ForMember(x => x.Title, y => y.MapFrom(src => src.GetProperty("title").ToTitleCase()));
+                .ForMember(x => x.Photo, y => y.MapFrom(src => src.GetProperty<byte[]>("thumbnailPhoto")))
+                .ForMember(x => x.Company, y => y.MapFrom(src => src.GetProperty<string>("company")))
+                .ForMember(x => x.Department, y => y.MapFrom(src => src.GetProperty<string>("department")))
+                .ForMember(x => x.Title, y => y.MapFrom(src => src.GetProperty<string>("title").ToTitleCase()));
         }
 
         public int Order => 0;

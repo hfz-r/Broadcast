@@ -5,12 +5,12 @@ namespace Broadcast.Services.Auth
 {
     public static class AccountManagementExtensions
     {
-        public static string GetProperty(this Principal principal, string property)
+        public static T GetProperty<T>(this Principal principal, string property)
         {
             return principal.GetUnderlyingObject() is DirectoryEntry directoryEntry &&
                    directoryEntry.Properties.Contains(property)
-                ? directoryEntry.Properties[property].Value.ToString()
-                : string.Empty;
+                ? (T) directoryEntry.Properties[property].Value
+                : default(T);
         }
     }
 }
