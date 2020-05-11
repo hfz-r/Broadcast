@@ -1,6 +1,12 @@
 using System;
 using System.Data;
 using System.Linq;
+using Broadcast.Core.Domain.Common;
+using Broadcast.Core.Domain.Logging;
+using Broadcast.Core.Domain.Messages;
+using Broadcast.Core.Domain.Projects;
+using Broadcast.Core.Domain.Tags;
+using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Infrastructure.TypeFinder;
 using Broadcast.Data.Mapping;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +21,27 @@ namespace Broadcast.Data
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        #region Tables
+
+        // Common
+        public DbSet<GenericAttribute> GenericAttributes { get; set; }
+        // Log
+        public DbSet<Log> Logs { get; set; }    
+
+        //Projects
+        public DbSet<Project> Projects { get; set; }
+        // Messages
+        public DbSet<File> Files { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MessageTag> MessageTags { get; set; }
+        public DbSet<Preference> Preferences { get; set; }
+        // Tag
+        public DbSet<Tag> Tags { get; set; }
+        // User
+        public DbSet<User> Users { get; set; }
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
