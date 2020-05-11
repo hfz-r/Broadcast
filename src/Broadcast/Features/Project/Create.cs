@@ -1,5 +1,4 @@
-﻿using Broadcast.Core;
-using Broadcast.Core.Domain.Messages;
+﻿using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Tags;
 using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Infrastructure;
