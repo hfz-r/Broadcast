@@ -37,16 +37,16 @@ namespace Broadcast.Infrastructure.Startup
             application.UseMvc();
 
             //spa client
-            application.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
+            //application.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "ClientApp";
 
-                if (EngineContext.Current.Resolve<IHostingEnvironment>().IsDevelopment())
-                {
-                    //spa.UseReactDevelopmentServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:3003");
-                }
-            });
+            //    if (EngineContext.Current.Resolve<IHostingEnvironment>().IsDevelopment())
+            //    {
+            //        //spa.UseReactDevelopmentServer(npmScript: "start");
+            //        spa.UseProxyToSpaDevelopmentServer("http://localhost:3003");
+            //    }
+            //});
         }
 
         public int Order => 1000;
