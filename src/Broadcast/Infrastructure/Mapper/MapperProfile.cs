@@ -7,8 +7,10 @@ using AutoMapper;
 using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Security;
 using Broadcast.Core.Domain.Users;
+using Broadcast.Core.Domain.Projects;
 using Broadcast.Core.Infrastructure.Mapper;
 using Broadcast.Dtos.Messages;
+using Broadcast.Dtos.Projects;
 using Broadcast.Dtos.Security;
 using Broadcast.Dtos.Users;
 using Broadcast.Services.Auth;
@@ -28,6 +30,8 @@ namespace Broadcast.Infrastructure.Mapper
             CreateExtrasMap();
             CreatePreferencesMap();
             CreateMessageMap();
+            //project map
+            CreateProjectListMap();
             //security
             //CreatePermissionSecurityMap();
             //CreateUserSecurityMap();
@@ -44,6 +48,18 @@ namespace Broadcast.Infrastructure.Mapper
             CreateMap<Message, ProjectDto>()
                 .IgnoreAllNonExisting()
                 .ForMember(x => x.Project, y => y.MapFrom(src => src.Project));
+        }
+
+        private void CreateProjectListMap()
+        {
+            CreateMap<Project, ProjectDto>()
+                .IgnoreAllNonExisting()
+                .ForMember(x => x.Project, y => y.MapFrom(src => src.Name))
+                .ForMember(x => x.Description, y => y.MapFrom(src => src.Description))
+                .ForMember(x => x.CreatedBy, y => y.MapFrom(src => src.CreatedBy))
+                .ForMember(x => x.CreatedOn, y => y.MapFrom(src => src.CreatedOn))
+                .ForMember(x => x.ModifiedOn, y => y.MapFrom(src => src.ModifiedOn))
+                .ForMember(x => x.ModifiedBy, y => y.MapFrom(src => src.Modifiedby));
         }
 
         private void CreateMessageAboutMap()
