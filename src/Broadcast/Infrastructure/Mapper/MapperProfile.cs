@@ -8,11 +8,11 @@ using Broadcast.Core.Domain.Messages;
 using Broadcast.Core.Domain.Security;
 using Broadcast.Core.Domain.Users;
 using Broadcast.Core.Domain.Projects;
+using Broadcast.Core.Dtos.Messages;
+using Broadcast.Core.Dtos.Projects;
+using Broadcast.Core.Dtos.Security;
+using Broadcast.Core.Dtos.Users;
 using Broadcast.Core.Infrastructure.Mapper;
-using Broadcast.Dtos.Messages;
-using Broadcast.Dtos.Projects;
-using Broadcast.Dtos.Security;
-using Broadcast.Dtos.Users;
 using Broadcast.Services.Auth;
 
 namespace Broadcast.Infrastructure.Mapper
@@ -22,7 +22,6 @@ namespace Broadcast.Infrastructure.Mapper
         public MapperProfile()
         {
             //message map
-            CreateMessageProjectMap();
             CreateMessageAboutMap();
             CreateMessageDetailsMap();
             CreateMessageExtrasMap();
@@ -30,36 +29,14 @@ namespace Broadcast.Infrastructure.Mapper
             CreateExtrasMap();
             CreatePreferencesMap();
             CreateMessageMap();
-            //project map
-            CreateProjectListMap();
+            //project
+            CreateProjectMap();
             //security
-            //CreatePermissionSecurityMap();
-            //CreateUserSecurityMap();
-            //CreateRoleSecurityMap();
             CreateRoleMap();
             CreatePermissionMap();
             //user
             CreateUserMap();
             CreateUserPrincipalMap();
-        }
-
-        private void CreateMessageProjectMap()
-        {
-            CreateMap<Message, ProjectDto>()
-                .IgnoreAllNonExisting()
-                .ForMember(x => x.Project, y => y.MapFrom(src => src.Project));
-        }
-
-        private void CreateProjectListMap()
-        {
-            CreateMap<Project, ProjectDto>()
-                .IgnoreAllNonExisting()
-                .ForMember(x => x.Project, y => y.MapFrom(src => src.Name))
-                .ForMember(x => x.Description, y => y.MapFrom(src => src.Description))
-                .ForMember(x => x.CreatedBy, y => y.MapFrom(src => src.CreatedBy))
-                .ForMember(x => x.CreatedOn, y => y.MapFrom(src => src.CreatedOn))
-                .ForMember(x => x.ModifiedOn, y => y.MapFrom(src => src.ModifiedOn))
-                .ForMember(x => x.ModifiedBy, y => y.MapFrom(src => src.Modifiedby));
         }
 
         private void CreateMessageAboutMap()
@@ -115,34 +92,21 @@ namespace Broadcast.Infrastructure.Mapper
                 .ForMember(x => x.Slug, y => y.MapFrom(src => src.Slug))
                 .ForMember(x => x.CreatedAt, y => y.MapFrom(src => src.CreatedAt))
                 .ForMember(x => x.UpdatedAt, y => y.MapFrom(src => src.UpdatedAt))
-                .ForMember(x => x.ProjectDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.AboutDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.DetailsDto, y => y.MapFrom(src => src))
                 .ForMember(x => x.ExtrasDto, y => y.MapFrom(src => src))
+                .ForMember(x => x.ProjectDto, y => y.MapFrom(src => src.Project.ToDto<ProjectDto>()))
                 .ForMember(x => x.AuthorDto, y => y.MapFrom(src => src.Author.ToDto<UserDto>()))
                 .ForMember(x => x.PreferencesDto, y => y.MapFrom(src => src.Preference.ToDto<PreferencesDto>()));
         }
 
-        //private void CreatePermissionSecurityMap()
-        //{
-        //    CreateMap<IList<Permission>, SecurityDto>()
-        //        .IgnoreAllNonExisting()
-        //        .ForMember(x => x.Permissions, y => y.MapFrom(src => src.Select(p => p.ToDto<PermissionDto>())));
-        //}
-
-        //private void CreateUserSecurityMap()
-        //{
-        //    CreateMap<IList<User>, SecurityDto>()
-        //        .IgnoreAllNonExisting()
-        //        .ForMember(x => x.Users, y => y.MapFrom(src => src.Select(u => u.ToDto<UserDto>())));
-        //}
-
-        //private void CreateRoleSecurityMap()
-        //{
-        //    CreateMap<Role, SecurityDto>()
-        //        .IgnoreAllNonExisting()
-        //        .ForMember(x => x.Role, y => y.MapFrom(src => src.ToDto<RoleDto>()));
-        //}
+        private void CreateProjectMap()
+        {
+            CreateMap<Project, ProjectDto>()
+                .IgnoreAllNonExisting()
+                .ForMember(x => x.Project, y => y.MapFrom(src => src.Name))
+                .ForMember(x => x.MessageIds, y => y.MapFrom(src => src.Messages.Select(msg => msg.Id)));
+        }
 
         private void CreateRoleMap()
         {

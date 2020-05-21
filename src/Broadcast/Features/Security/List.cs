@@ -4,12 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Broadcast.Core.Domain.Security;
 using Broadcast.Core.Domain.Users;
+using Broadcast.Core.Dtos.Security;
+using Broadcast.Core.Dtos.Users;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
 using Broadcast.Core.Infrastructure.Mapper;
 using Broadcast.Core.Infrastructure.Paging;
-using Broadcast.Dtos.Security;
-using Broadcast.Dtos.Users;
 using MediatR;
 
 namespace Broadcast.Features.Security

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Broadcast.Dtos.Users
+namespace Broadcast.Core.Dtos.Users
 {
     public class UserDto
     {

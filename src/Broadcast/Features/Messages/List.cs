@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Broadcast.Core.Domain.Messages;
-using Broadcast.Dtos.Messages;
+using Broadcast.Core.Dtos.Messages;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
 using Broadcast.Core.Infrastructure.Mapper;

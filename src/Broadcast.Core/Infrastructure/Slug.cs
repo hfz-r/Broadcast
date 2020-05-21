@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Broadcast.Infrastructure
+namespace Broadcast.Core.Infrastructure
 {
     public static class Slug
     {

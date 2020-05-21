@@ -10,6 +10,7 @@ using Broadcast.Infrastructure.Behaviors;
 using Broadcast.Services.Auth;
 using Broadcast.Services.Common;
 using Broadcast.Services.Logging;
+using Broadcast.Services.Messages;
 using Broadcast.Services.Security;
 using Broadcast.Services.Users;
 using MediatR;
@@ -49,6 +50,7 @@ namespace Broadcast.Infrastructure
             //domain services
             builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
             builder.RegisterType<GenericAttributeService>().As<IGenericAttributeService>().InstancePerLifetimeScope();
+            builder.RegisterType<MessageService>().As<IMessageService>().InstancePerLifetimeScope();
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<PermissionService>().As<IPermissionService>().InstancePerLifetimeScope();
         }

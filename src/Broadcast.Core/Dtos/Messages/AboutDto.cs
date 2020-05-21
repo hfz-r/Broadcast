@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Broadcast.Dtos.Messages
+namespace Broadcast.Core.Dtos.Messages
 {
     public class AboutDto
     {

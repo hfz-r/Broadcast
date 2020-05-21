@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Broadcast.Dtos.Security
+namespace Broadcast.Core.Dtos.Security
 {
     public class PermissionDto
     {

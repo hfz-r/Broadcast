@@ -1,4 +1,4 @@
-﻿namespace Broadcast.Dtos.Messages
+﻿namespace Broadcast.Core.Dtos.Messages
 {
     // todo
     public class PreferencesDto

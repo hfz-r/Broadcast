@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Broadcast.Core;
+using Broadcast.Core.Dtos.Users;
 using Broadcast.Core.Infrastructure.Mapper;
 using Broadcast.Core.Infrastructure.Security;
-using Broadcast.Dtos.Users;
 using Broadcast.Infrastructure.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +12,7 @@ namespace Broadcast.Features.Users
 {
     [Route("api/users")]
     [Authorize(Policy = "DefaultPolicy")]
-    public class UsersController : Controller
+    public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly ICurrentUserAccessor _currentUser;

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Broadcast.Dtos.Messages;
+using Broadcast.Core.Dtos.Messages;
 using Newtonsoft.Json;
 
 namespace Broadcast.Features.Messages

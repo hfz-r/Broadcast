@@ -1,9 +1,9 @@
 ﻿using System;
-using Broadcast.Dtos.Projects;
-using Broadcast.Dtos.Users;
+using Broadcast.Core.Dtos.Projects;
+using Broadcast.Core.Dtos.Users;
 using Newtonsoft.Json;
 
-namespace Broadcast.Dtos.Messages
+namespace Broadcast.Core.Dtos.Messages
 {
     public class MessageDto
     {

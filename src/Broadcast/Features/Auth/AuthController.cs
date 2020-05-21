@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Broadcast.Features.Auth
 {
     [Route("api/auth")]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly IAuthenticationService _authentication;

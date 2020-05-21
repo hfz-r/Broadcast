@@ -12,7 +12,6 @@ namespace Broadcast.Data.Mapping.Messages
             builder.ToTable(nameof(Message));
             builder.HasKey(msg => msg.Id);
 
-            builder.Property(msg => msg.Project).HasMaxLength(400).IsRequired();
             builder.Property(msg => msg.Title).HasMaxLength(1000).IsRequired();
             builder.Property(msg => msg.Description).HasMaxLength(int.MaxValue).IsRequired();
         }

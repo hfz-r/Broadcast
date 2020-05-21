@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Broadcast.Dtos.Messages
+namespace Broadcast.Core.Dtos.Messages
 {
     public class MessageValidator : AbstractValidator<MessageDto>
     {

@@ -4,10 +4,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Broadcast.Core;
 using Broadcast.Core.Domain.Users;
+using Broadcast.Core.Dtos.Users;
 using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
 using Broadcast.Core.Infrastructure.Mapper;
-using Broadcast.Dtos.Users;
 using FluentValidation;
 using MediatR;
 

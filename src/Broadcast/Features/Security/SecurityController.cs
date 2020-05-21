@@ -7,7 +7,7 @@ namespace Broadcast.Features.Security
 {
     [Route("api/security")]
     //[Authorize(Policy = "DefaultPolicy")]
-    public class SecurityController : Controller
+    public class SecurityController : ControllerBase
     {
         private readonly IMediator _mediator;
 

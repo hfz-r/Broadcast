@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Broadcast.Dtos.Security;
+using Broadcast.Core.Dtos.Security;
 using Newtonsoft.Json;
 
 namespace Broadcast.Features.Security

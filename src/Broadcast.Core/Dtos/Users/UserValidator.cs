@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Broadcast.Dtos.Users
+namespace Broadcast.Core.Dtos.Users
 {
     public class UserValidator : AbstractValidator<UserDto>
     {

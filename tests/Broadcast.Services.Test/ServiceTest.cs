@@ -16,9 +16,9 @@ namespace Broadcast.Services.Test
 
         public void RunWithTestServiceProvider(Action action)
         {
-            var nopEngine = new Mock<Engine>();
-            nopEngine.Setup(x => x.ServiceProvider).Returns(new TestServiceProvider());
-            EngineContext.Replace(nopEngine.Object);
+            var engine = new Mock<Engine>();
+            engine.Setup(x => x.ServiceProvider).Returns(new TestServiceProvider());
+            EngineContext.Replace(engine.Object);
 
             action();
 

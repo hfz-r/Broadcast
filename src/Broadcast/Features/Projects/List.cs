@@ -1,33 +1,35 @@
-﻿using Broadcast.Core.Domain.Projects;
-using Broadcast.Core.Infrastructure;
+﻿using Broadcast.Core.Infrastructure;
 using Broadcast.Core.Infrastructure.Errors;
 using Broadcast.Core.Infrastructure.Mapper;
-using Broadcast.Dtos.Projects;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Broadcast.Core.Domain.Projects;
+using Broadcast.Core.Dtos.Projects;
 
-namespace Broadcast.Features.Project
+namespace Broadcast.Features.Projects
 {
     public class List
     {
-        public class Query : IRequest<Project.ProjectsEnvelope>
+        public class Query : IRequest<ProjectsEnvelope>
         {
-            public Query(string name, int size)
+            public Query(string name, int? size, int? offset)
             {
                 Name = name;
                 Size = size;
+                Offset = offset;
             }
 
             public string Name { get; }
+
             public int? Size { get; set; }
+
+            public int? Offset { get; }
         }
 
-        public class QueryHandler : IRequestHandler<Query, Project.ProjectsEnvelope>
+        public class QueryHandler : IRequestHandler<Query, ProjectsEnvelope>
         {
             private readonly IUnitOfWork _worker;
 
@@ -36,23 +38,23 @@ namespace Broadcast.Features.Project
                 _worker = worker;
             }
 
-            public async Task<Project.ProjectsEnvelope> Handle(Query project, CancellationToken cancellationToken)
+            public async Task<ProjectsEnvelope> Handle(Query project, CancellationToken cancellationToken)
             {
-                var repo = _worker.GetRepositoryAsync<Core.Domain.Projects.Project>();
+                var repo = _worker.GetRepositoryAsync<Project>();
 
                 var projects = await repo.GetPagedListAsync(
                     orderBy: x => x.OrderByDescending(mbox => mbox.CreatedOn),
-                    index: 0,
-                    size:project.Size ?? 20,
+                    index: project.Offset ?? 0,
+                    size: project.Size ?? 20,
                     cancellationToken: cancellationToken);
 
                 if (projects == null)
-                    throw new RestException(HttpStatusCode.NotFound, new { Messages = $"Messages {Constants.NotFound}" });
+                    throw new RestException(HttpStatusCode.NotFound, new {Messages = $"Messages {Constants.NotFound}"});
 
-                return new Project.ProjectsEnvelope
+                return new ProjectsEnvelope
                 {
                     Projects = projects.Items.Select(proj => proj.ToDto<ProjectDto>()).ToList(),
-                    ProjectsCount = projects.Items.Count()
+                    ProjectsCount = projects.Count
                 };
             }
         }

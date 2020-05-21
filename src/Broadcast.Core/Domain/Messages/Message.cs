@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Broadcast.Core.Domain.Projects;
 using Broadcast.Core.Domain.Users;
 using Newtonsoft.Json;
 
@@ -7,8 +8,6 @@ namespace Broadcast.Core.Domain.Messages
 {
     public class Message : BaseEntity
     {
-        public string Project { get; set; }
-
         public string Title { get; set; }
 
         public string Description { get; set; }
@@ -20,6 +19,8 @@ namespace Broadcast.Core.Domain.Messages
         public DateTime EndDate { get; set; }
 
         public string Slug { get; set; }
+
+        public virtual Project Project { get; set; }
 
         public virtual User Author { get; set; }
 

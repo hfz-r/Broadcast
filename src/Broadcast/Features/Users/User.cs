@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Broadcast.Dtos.Users;
+using Broadcast.Core.Dtos.Users;
 using Newtonsoft.Json;
 
 namespace Broadcast.Features.Users

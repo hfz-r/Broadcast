@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Broadcast.Dtos.Users;
+using Broadcast.Core.Dtos.Users;
 using Newtonsoft.Json;
 
-namespace Broadcast.Dtos.Security
+namespace Broadcast.Core.Dtos.Security
 {
     public class SecurityDto
     {

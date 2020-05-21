@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 
-namespace Broadcast.Dtos.Projects
+namespace Broadcast.Core.Dtos.Projects
 {
     public class ProjectValidator : AbstractValidator<ProjectDto>
     {
