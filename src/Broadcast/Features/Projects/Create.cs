@@ -59,7 +59,6 @@ namespace Broadcast.Features.Projects
                 };
 
                 await projRepo.AddAsync(project, cancellationToken);
-
                 await _worker.SaveChangesAsync();
 
                 return new ProjectEnvelope(project.ToDto<ProjectDto>());

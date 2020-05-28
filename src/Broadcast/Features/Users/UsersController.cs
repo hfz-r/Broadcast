@@ -24,21 +24,28 @@ namespace Broadcast.Features.Users
         }
 
         [HttpGet("current")]
-        //[HasPermission(StandardPermission.UserRead)]
+        [HasPermission(StandardPermission.UserRead)]
         public async Task<UserEnvelope> GetCurrentUser()
         {
             return await Task.FromResult(new UserEnvelope(_currentUser.CurrentUser.ToDto<UserDto>()));
         }
 
         [HttpGet]
-        //[HasPermission(StandardPermission.UserRead)]
+        [HasPermission(StandardPermission.UserRead)]
         public async Task<UsersEnvelope> Get([FromQuery] string department, [FromQuery] int? limit, [FromQuery] int? offset)
         {
             return await _mediator.Send(new List.Query(department, limit, offset));
         }
 
+        [HttpPost]
+        [HasPermission(StandardPermission.UserChange)]
+        public async Task<UserEnvelope> Create([FromBody] Create.Command command)
+        {
+            return await _mediator.Send(command);
+        }
+
         [HttpPut("{username}")]
-        //[HasPermission(StandardPermission.UserChange)]
+        [HasPermission(StandardPermission.UserChange)]
         public async Task<UserEnvelope> Edit(string username, [FromBody] Edit.Command command)
         {
             command.Username = username;

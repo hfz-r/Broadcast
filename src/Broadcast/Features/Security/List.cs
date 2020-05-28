@@ -60,8 +60,19 @@ namespace Broadcast.Features.Security
                     .GroupJoin(permissionRole, r => r.r.Id, pr => pr.RoleId, (r, pr) => new { r.r, r.ur, pr })
                     .Select(r => new SecurityDto
                     {
+                        Users = r.ur.Select(x => new UserDto
+                        {
+                            //required to eagerly load query by projection
+                            Department = x.User.Department,
+                            Designation = x.User.Title,
+                            Email = x.User.Email,
+                            FullName = x.User.Name,
+                            GivenName = x.User.GivenName,
+                            Guid = x.User.Guid,
+                            Phone = x.User.PhoneNumber,
+                            Username = x.User.AccountName
+                        }).ToList(),
                         Role = r.r.ToDto<RoleDto>(),
-                        Users = r.ur.Select(x => x.User.ToDto<UserDto>()).ToList(),
                         Permissions = r.pr.Select(x => x.Permission.ToDto<PermissionDto>()).ToList()
                     });
 

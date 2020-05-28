@@ -8,6 +8,9 @@ namespace Broadcast.Core.Dtos.Users
         [JsonProperty("guid")]
         public Guid Guid { get; set; }
 
+        [JsonProperty("password")]
+        public string Password { get; set; }
+
         [JsonProperty("username")]
         public string Username { get; set; }
 
@@ -32,7 +35,6 @@ namespace Broadcast.Core.Dtos.Users
         [JsonProperty("designation")]
         public string Designation { get; set; }
 
-        //todo - check this why can`t retrive on group-join, lazyload-ish exception!
         [JsonProperty("roles")]
         public string[] Roles { get; set; }
     }

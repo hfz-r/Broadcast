@@ -32,5 +32,13 @@ namespace Broadcast.Features.Messages
         {
             return await _mediator.Send(command);
         }
+
+        [HttpPut("{slug}")]
+        [HasPermission(StandardPermission.AnnouncementChange)]
+        public async Task<MessageEnvelope> Edit(string slug, [FromBody] Edit.Command command)
+        {
+            command.Slug = slug;
+            return await _mediator.Send(command);
+        }
     }
 }

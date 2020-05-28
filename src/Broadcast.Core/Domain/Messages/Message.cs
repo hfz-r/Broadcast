@@ -38,5 +38,15 @@ namespace Broadcast.Core.Domain.Messages
 
         [JsonIgnore]
         public virtual ICollection<File> Files { get; set; }
+
+        #region Methods
+
+        public void AddMessageTag(MessageTag messageTag) => MessageTags.Add(messageTag);
+        public void RemoveMessageTag(MessageTag messageTag) => MessageTags.Remove(messageTag);
+
+        public void AddMessageCategory(MessageCategory messageCategory) => MessageCategories.Add(messageCategory);
+        public void RemoveMessageCategory(MessageCategory messageCategory) => MessageCategories.Remove(messageCategory);
+
+        #endregion
     }
 }

@@ -2,6 +2,12 @@
 {
     public class UserDefaults
     {
+        #region User attributes
+
+        public static string PasswordAttribute => "Password";
+
+        #endregion
+
         #region Default role
 
         public static string AdminRole => "Admin";

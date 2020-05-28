@@ -9,5 +9,6 @@ namespace Broadcast.Services.Messages
     {
         Task<IPaginate<Message>> FetchMessagesAsync(string tag, string author, int? limit, int? offset);
         Task<Message> InsertMessageAsync(MessageDto dto);
+        Task<Message> UpdateMessageAsync(string slug, MessageDto dto);
     }
 }
