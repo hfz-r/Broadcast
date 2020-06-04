@@ -19,8 +19,8 @@ namespace Broadcast.Features.Messages
         }
 
         [HttpGet]
-        //[AllowAnonymous]
-        [HasPermission(StandardPermission.AnnouncementRead)]
+        [AllowAnonymous]
+        //[HasPermission(StandardPermission.AnnouncementRead)]
         public async Task<MessagesEnvelope> Get([FromQuery] string tag, [FromQuery] string author, [FromQuery] int? limit, [FromQuery] int? offset)
         {
             return await _mediator.Send(new List.Query(tag, author, limit, offset));
