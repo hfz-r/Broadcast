@@ -1,8 +1,8 @@
 [submodule "src/Plugin"]
 	path = src/Plugin
-	url = http://bj-tfs-dev:8080/tfs/DefaultCollection/Broadcast/_git/Broadcast-Plugin
+	url = https://github.com/hfz-r/Broadcast-Plugin
 	branch = dev
 [submodule "src/Broadcast/ClientApp"]
 	path = src/Broadcast/ClientApp
-	url = http://bj-tfs-dev:8080/tfs/DefaultCollection/Broadcast/_git/Broadcast-Frontend
+	url = https://github.com/hfz-r/Broadcast-Frontend
 	branch = dev
