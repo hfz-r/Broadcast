@@ -1,7 +1,7 @@
 [submodule "src/Plugin"]
 	path = src/Plugin
 	url = https://github.com/hfz-r/Broadcast-Plugin
-	branch = dev
+	branch = master
 [submodule "src/Broadcast/ClientApp"]
 	path = src/Broadcast/ClientApp
 	url = https://github.com/hfz-r/Broadcast-Frontend
